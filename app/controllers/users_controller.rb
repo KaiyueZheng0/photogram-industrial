@@ -1,20 +1,24 @@
+# app/controllers/users_controller.rb
 class UsersController < ApplicationController
-  before_action :set_user_by_username
-
   def show
+    @user = User.find_by!(username: params[:username])
+  end
+
+  def liked
+    @user = User.find_by!(username: params[:username])
+    @photos = @user.liked_photos
+    render "show"
   end
 
   def feed
-    @feed_photos = @user.feed.order(created_at: :desc)
+    @user = current_user
+    @photos = @user.feed
+    render "show"
   end
 
   def discover
-    @discover_photos = @user.discover.order(created_at: :desc)
-  end
-
-  private
-
-  def set_user_by_username
-    @user = User.find_by!(username: params[:username])
+    @user = current_user
+    @photos = @user.discover
+    render "show"
   end
 end

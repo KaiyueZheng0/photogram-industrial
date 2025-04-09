@@ -1,15 +1,20 @@
-<div class="row mb-4">
+<!-- app/views/users/show.html.erb -->
+<div class="row">
   <div class="col-md-6 offset-md-3">
-    <%= render "users/user", user: @user %>
+    <h1><%= @user.username %></h1>
+    <%= image_tag @user.avatar_image_url, class: "rounded-circle" %>
+
+    <ul class="nav nav-pills nav-justified mb-4">
+      <li class="nav-item">
+        <%= link_to "Posts", user_path(@user.username), class: "nav-link #{'active' if current_page?(user_path(@user))}" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "Liked", liked_path(@user.username), class: "nav-link #{'active' if current_page?(liked_path(@user))}" %>
+      </li>
+    </ul>
+
+    <% @photos.each do |photo| %>
+      <%= render "photos/photo", photo: photo %>
+    <% end %>
   </div>
 </div>
-
-<div class="row mb-2">
-  <div class="col-md-6 offset-md-3">
-    <%= render "users/profile_nav", user: @user %>
-  </div>
-</div>
-
-<% @user.own_photos.each do |photo| %>
-  <%= render "photos/photo", photo: photo %>
-<% end %>

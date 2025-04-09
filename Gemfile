@@ -1,5 +1,6 @@
 source "https://rubygems.org"
 gem "devise"
+gem "carrierwave"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0.2"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
@@ -69,7 +70,6 @@ gem "pundit"
 gem "ransack"
 gem "strip_attributes"
 gem "validate_url"
-gem "carrierwave"
 gem "cloudinary"
 gem "kaminari"
 
