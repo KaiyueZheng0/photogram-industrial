@@ -1,4 +1,5 @@
 <%= form_with(model: photo, class: "card-body") do |form| %>
+<%= form.text_field :image %>
   <% if photo.errors.any? %>
     <div id="error_explanation">
       <ul class="list-unstyled">

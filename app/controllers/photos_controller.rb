@@ -1,6 +1,5 @@
 class PhotosController < ApplicationController
-  before_action :authenticate_user!
-  before_action :set_photo, only: %i[show edit update destroy]
+  before_action :set_photo, only: %i[ show edit update destroy ]
 
   # GET /photos or /photos.json
   def index
@@ -23,11 +22,11 @@ class PhotosController < ApplicationController
   # POST /photos or /photos.json
   def create
     @photo = Photo.new(photo_params)
-    @photo.owner = current_user
+    @photo.owner = current_user # <- ensure photos are owned by the current user
 
     respond_to do |format|
       if @photo.save
-        format.html { redirect_to @photo, notice: "Photo was successfully created." }
+        format.html { redirect_to photo_url(@photo), notice: "Photo was successfully created." }
         format.json { render :show, status: :created, location: @photo }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -40,7 +39,7 @@ class PhotosController < ApplicationController
   def update
     respond_to do |format|
       if @photo.update(photo_params)
-        format.html { redirect_to @photo, notice: "Photo was successfully updated." }
+        format.html { redirect_to photo_url(@photo), notice: "Photo was successfully updated." }
         format.json { render :show, status: :ok, location: @photo }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,14 +51,14 @@ class PhotosController < ApplicationController
   # DELETE /photos/1 or /photos/1.json
   def destroy
     @photo.destroy!
+
     respond_to do |format|
-      format.html { redirect_to photos_path, status: :see_other, notice: "Photo was successfully destroyed." }
+      format.html { redirect_to photos_url, notice: "Photo was successfully destroyed." }
       format.json { head :no_content }
     end
   end
 
   private
-
     # Use callbacks to share common setup or constraints between actions.
     def set_photo
       @photo = Photo.find(params[:id])

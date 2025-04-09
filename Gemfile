@@ -1,4 +1,5 @@
 source "https://rubygems.org"
+gem 'ransack'
 gem "devise"
 gem "carrierwave"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"

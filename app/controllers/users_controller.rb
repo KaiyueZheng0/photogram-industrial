@@ -1,24 +1,17 @@
-# app/controllers/users_controller.rb
 class UsersController < ApplicationController
-  def show
-    @user = User.find_by!(username: params[:username])
+  def feed
+    # Use the current_user if no :username is provided
+    @user = params[:username].present? ? User.find_by!(username: params[:username]) : current_user
+
+    # Fetch photos for the user's feed
+    @feed_photos = Photo.where(owner: @user) # Adjust query logic as needed
   end
 
   def liked
-    @user = User.find_by!(username: params[:username])
-    @photos = @user.liked_photos
-    render "show"
-  end
-
-  def feed
-    @user = current_user
-    @photos = @user.feed
-    render "show"
+    @user = User.find_by!(username: params.fetch(:username))
   end
 
   def discover
-    @user = current_user
-    @photos = @user.discover
-    render "show"
+    @user = User.find_by!(username: params.fetch(:username))
   end
 end

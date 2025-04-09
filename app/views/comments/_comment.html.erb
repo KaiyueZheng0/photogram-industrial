@@ -1,25 +1,49 @@
-<li class="list-group-item">
-  <div class="d-flex">
-    <div class="flex-shrink-0">
-      <%= image_tag comment.author.avatar_image_url, class: "rounded-circle me-2 img-cover img-small" %>
-    </div>
-    <div class="flex-grow-1 ms-3">
-      <div class="d-flex align-items-center justify-content-between">
-        <h5 class="mt-0">
-          <%= link_to comment.author.username, user_path(comment.author.username), class: "text-dark link-underline-dark link-underline-opacity-0 link-underline-opacity-100-hover" %>
-        </h5>
-
-        <div>
-          <%= link_to edit_comment_path(comment), class: "btn btn-link btn-sm text-muted" do %>
-            <i class="fas fa-edit fa-fw"></i>
-          <% end %>
-
-          <%= button_to comment, method: :delete, class: "btn btn-link btn-sm text-muted", form_class: "btn btn-sm btn-link" do %>
-            <i class="fas fa-trash fa-fw"></i>
-          <% end %>
-        </div>
+<li class="list-group-item" id="comment-<%= comment.id %>">
+  <article class="comment">
+    <div class="d-flex">
+      <div class="flex-shrink-0">
+        <%= image_tag comment.author.avatar_image_url, 
+              class: "rounded-circle me-2 img-cover img-small",
+              alt: "#{comment.author.username}'s avatar",
+              loading: "lazy",
+              width: "40",
+              height: "40" %>
       </div>
-      <p><%= comment.body %></p>
-    </div>
-  </div> 
-</li>
+      <div class="flex-grow-1 ms-3">
+        <header class="d-flex align-items-center justify-content-between gap-2 mb-2">
+          <h2 class="h5 mb-0">
+            <%= link_to comment.author.username, 
+                  user_path(comment.author.username), 
+                  class: "text-dark text-decoration-none hover-underline",
+                  aria: { label: "View #{comment.author.username}'s profile" %>
+          </h2>
+
+          <div class="btn-group" role="group" aria-label="Comment actions">
+            <% if policy(comment).edit? %>
+              <%= link_to edit_comment_path(comment), 
+                    class: "btn btn-link btn-sm text-muted hover-primary",
+                    aria: { label: "Edit comment" } do %>
+                <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+              <% end %>
+            <% end %>
+
+            <% if policy(comment).destroy? %>
+              <%= button_to comment, 
+                    method: :delete,
+                    class: "btn btn-link btn-sm text-muted hover-danger",
+                    form: { 
+                      class: "d-inline",
+                      data: { turbo_confirm: "Delete this comment?" } 
+                    },
+                    aria: { label: "Delete comment" } do %>
+                <i class="fas fa-trash fa-fw" aria-hidden="true"></i>
+              <% end %>
+            <% end %>
+          </div>
+        </header>
+
+        <div class="comment-body">
+          <p class="mb-2"><%= comment.body %></p>
+          <time datetime="<%= comment.created_at.iso8601 %>" 
+                class="text-muted small">
+            <%= time_ago_in_words(comment.created_at) %>

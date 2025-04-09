@@ -1,20 +1,67 @@
-<!-- app/views/users/show.html.erb -->
-<div class="row">
-  <div class="col-md-6 offset-md-3">
-    <h1><%= @user.username %></h1>
-    <%= image_tag @user.avatar_image_url, class: "rounded-circle" %>
+<div class="user-profile">
+  <!-- Header Section -->
+  <div class="profile-header text-center py-5 bg-light border-bottom">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+          <%= image_tag @user.avatar_url, 
+                class: "avatar-img rounded-circle mb-3",
+                alt: "#{@user.username}'s avatar",
+                style: "width: 150px; height: 150px" %>
 
-    <ul class="nav nav-pills nav-justified mb-4">
-      <li class="nav-item">
-        <%= link_to "Posts", user_path(@user.username), class: "nav-link #{'active' if current_page?(user_path(@user))}" %>
-      </li>
-      <li class="nav-item">
-        <%= link_to "Liked", liked_path(@user.username), class: "nav-link #{'active' if current_page?(liked_path(@user))}" %>
-      </li>
-    </ul>
+          <h1 class="h2 mb-1"><%= @user.username %></h1>
+          
+          <div class="stats d-flex justify-content-center gap-4 mb-3">
+            <div>
+              <strong><%= @user.own_photos.count %></strong> posts
+            </div>
+            <div>
+              <strong><%= @user.followers.count %></strong> followers
+            </div>
+            <div>
+              <strong><%= @user.following.count %></strong> following
+            </div>
+          </div>
 
-    <% @photos.each do |photo| %>
-      <%= render "photos/photo", photo: photo %>
-    <% end %>
+          <%= render "follow_button", user: @user %>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+
+  <!-- Navigation Tabs -->
+  <nav class="profile-nav border-bottom">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+          <ul class="nav nav-pills nav-justified">
+            <li class="nav-item">
+              <%= link_to user_path(@user.username), 
+                    class: "nav-link #{'active' if current_page?(user_path(@user.username))}" do %>
+                <i class="fas fa-grid me-1"></i> Posts
+              <% end %>
+            </li>
+            <li class="nav-item">
+              <%= link_to liked_user_path(@user.username), 
+                    class: "nav-link #{'active' if current_page?(liked_user_path(@user.username))}" do %>
+                <i class="fas fa-heart me-1"></i> Liked
+              <% end %>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Content Grid -->
+  <div class="profile-content py-4">
+    <div class="container">
+      <% if @photos.any? %>
+        <div class="row row-cols-1 row-cols-md-3 g-3">
+          <% @photos.each do |photo| %>
+            <div class="col">
+              <%= link_to photo_path(photo), class: "photo-thumbnail" do %>
+                <%= image_tag photo.image.url, class: "img-fluid" %>
+                <div class="photo-hover">
+                  <span><i class="fas fa-heart"></i> <%= photo.likes.count %></span>
+                  <span><i class="fas fa-comment"></i

@@ -1,11 +1,19 @@
-<h1><%= @user.username %>'s Feed</h1>
+<h1 class="h2 mb-4"><%= content_for(:title) || "#{@user.username}'s Feed" %></h1>
 
-<% @feed_photos.each do |photo| %>
-  <div class="card mb-3">
-    <div class="card-body">
-      <p><strong><%= photo.owner.username %></strong></p>
-      <img src="<%= photo.image %>" class="img-fluid mb-2" />
-      <p><%= photo.caption %></p>
-    </div>
-  </div>
+<% if @feed_photos.any? %>
+  <% @feed_photos.each do |photo| %>
+    <article class="card mb-4" aria-labelledby="photo-<%= photo.id %>-caption">
+      <div class="card-body">
+        <header class="d-flex align-items-center gap-2 mb-3">
+          <%= link_to user_path(photo.owner), class: "text-decoration-none" do %>
+            <strong class="h5 mb-0"><%= photo.owner.username %></strong>
+          <% end %>
+        </header>
+        <%= image_tag photo.image_url, class: "img-fluid" %>
+        <p id="photo-<%= photo.id %>-caption"><%= photo.caption %></p>
+      </div>
+    </article>
+  <% end %>
+<% else %>
+  <p>No photos to display in your feed.</p>
 <% end %>

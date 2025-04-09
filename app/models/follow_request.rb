@@ -23,4 +23,10 @@
 class FollowRequest < ApplicationRecord
   belongs_to :sender, class_name: "User", required: true
   belongs_to :recipient, class_name: "User", required: true
+
+  validate :cannot_follow_self
+
+  def cannot_follow_self
+  errors.add(:base, "Cannot follow yourself") if sender_id == recipient_id
+  end
 end

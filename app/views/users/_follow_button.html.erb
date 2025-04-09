@@ -1,0 +1,13 @@
+<% if current_user != user %>
+  <div class="follow-button">
+    <% if current_user.following?(user) %>
+      <%= button_to "Unfollow", unfollow_user_path(user), 
+            method: :delete, 
+            class: "btn btn-outline-secondary btn-sm" %>
+    <% else %>
+      <%= button_to "Follow", follow_user_path(user), 
+            method: :post,
+            class: "btn btn-primary btn-sm" %>
+    <% end %>
+  </div>
+<% end %>

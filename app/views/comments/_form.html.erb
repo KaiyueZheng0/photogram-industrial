@@ -1,28 +1,39 @@
-<li class="list-group-item">
-  <%= form_with(model: comment) do |form| %>
+<li class="list-group-item bg-light">
+  <%= form_with(model: comment, 
+               data: { controller: "comment-form", action: "turbo:submit-end->comment-form#reset" },
+               class: "comment-form") do |form| %>
+    <%= form.hidden_field :photo_id %>
+
     <% if comment.errors.any? %>
-      <div id="error_explanation">
-        <ul class="list-unstyled">
+      <div id="error_explanation" class="alert alert-danger" role="alert">
+        <h2 class="h6 mb-2"><%= t("errors.messages.not_saved", count: comment.errors.count) %></h2>
+        <ul class="mb-0 ps-3">
           <% comment.errors.each do |error| %>
-            <li>
-              <div class="alert alert-danger" role="alert">
-                <%= error.full_message %>
-              </div>
-            </li>
+            <li><%= error.full_message %></li>
           <% end %>
         </ul>
       </div>
     <% end %>
 
-    <%= form.hidden_field :photo_id %>
-
-    <div class="form-group mb-3">
-      <%= form.label :body, class: "visually-hidden" %>
-      <%= form.text_area :body, class: "form-control" %>
+    <div class="form-floating mb-3">
+      <%= form.text_area :body, 
+            class: "form-control #{'is-invalid' if comment.errors[:body].any?}",
+            placeholder: t(".body_placeholder"),
+            data: { "comment-form-target": "input" },
+            aria: { 
+              label: t(".body_label"),
+              describedby: comment.errors.any? ? "error_explanation" : nil 
+            } %>
+      <%= form.label :body, t(".body_label"), class: "form-label" %>
     </div>
 
-    <div class="actions d-grid gap-2">
-      <%= form.submit class: "btn btn-outline-secondary" %>
+    <div class="d-flex gap-2 justify-content-end">
+      <%= link_to t("cancel"), comment.photo, 
+            class: "btn btn-link text-muted",
+            data: { action: "click->comment-form#cancel" } %>
+      <%= form.submit t("submit"), 
+            class: "btn btn-primary",
+            data: { disable_with: t("submitting") } %>
     </div>
   <% end %>
 </li>

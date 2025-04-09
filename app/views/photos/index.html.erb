@@ -1,0 +1,11 @@
+<h1>All Photos</h1>
+
+<% @photos.each do |photo| %>
+  <div class="card mb-4">
+    <%= image_tag photo.image_url, class: "card-img-top" if photo.image.present? %>
+    <div class="card-body">
+      <h5 class="card-title"><%= photo.owner.username if photo.owner %></h5>
+      <p class="card-text"><%= photo.caption %></p>
+    </div>
+  </div>
+<% end %>
