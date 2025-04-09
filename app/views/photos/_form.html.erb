@@ -1,5 +1,5 @@
-<%= form_with(model: photo, class: "card-body") do |form| %>
-<%= form.text_field :image %>
+<%= form_with(model: photo, local: true, html: {multipart: true}, class: "card-body") do |form| %>
+
   <% if photo.errors.any? %>
     <div id="error_explanation">
       <ul class="list-unstyled">
@@ -25,6 +25,7 @@
   </div>
 
   <div class="actions d-grid gap-2">
-    <%= form.submit class: "btn btn-outline-primary btn-block" %>
+    <%= form.submit "Upload", class: "btn btn-outline-primary btn-block" %>
   </div>
+
 <% end %>
