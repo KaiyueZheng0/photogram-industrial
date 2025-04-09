@@ -1,2 +1,11 @@
-<h1>Users#feed</h1>
-<p>Find me in app/views/users/feed.html.erb</p>
+<h1><%= @user.username %>'s Feed</h1>
+
+<% @feed_photos.each do |photo| %>
+  <div class="card mb-3">
+    <div class="card-body">
+      <p><strong><%= photo.owner.username %></strong></p>
+      <img src="<%= photo.image %>" class="img-fluid mb-2" />
+      <p><%= photo.caption %></p>
+    </div>
+  </div>
+<% end %>

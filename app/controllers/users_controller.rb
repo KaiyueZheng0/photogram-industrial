@@ -1,17 +1,20 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!
+  before_action :set_user_by_username
 
   def show
-    @user = User.find_by!(username: params[:username])
   end
 
   def feed
-    @user = User.find_by!(username: params[:username])
-    @photos = @user.feed
+    @feed_photos = @user.feed.order(created_at: :desc)
   end
 
   def discover
+    @discover_photos = @user.discover.order(created_at: :desc)
+  end
+
+  private
+
+  def set_user_by_username
     @user = User.find_by!(username: params[:username])
-    @photos = @user.discover
   end
 end

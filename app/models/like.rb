@@ -20,6 +20,6 @@
 #  fk_rails_...  (photo_id => photos.id)
 #
 class Like < ApplicationRecord
+  belongs_to :fan, class_name: "User", required: true
   belongs_to :photo, required: true
-  belongs_to :fan, class_name: "User", foreign_key: "fan_id", required: true
 end
