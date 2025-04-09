@@ -20,8 +20,6 @@
 #  fk_rails_...  (photo_id => photos.id)
 #
 class Comment < ApplicationRecord
-  belongs_to :author, class_name: "User", required: true
   belongs_to :photo, required: true
-
-  validates :body, presence: true
+  belongs_to :author, class_name: "User", foreign_key: "author_id", required: true
 end
