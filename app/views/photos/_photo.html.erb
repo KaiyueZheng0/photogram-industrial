@@ -1,27 +1,26 @@
-<div id="<%= dom_id photo %>">
-  <p>
-    <strong>Image:</strong>
-    <%= photo.image %>
-  </p>
+<div id="<%= dom_id photo %>" class="card mb-4">
+  <img src="<%= photo.image %>" class="card-img-top" alt="Photo image" />
 
-  <p>
-    <strong>Comments count:</strong>
-    <%= photo.comments_count %>
-  </p>
+  <div class="card-body">
+    <h5 class="card-title">@<%= photo.owner.username %></h5>
 
-  <p>
-    <strong>Likes count:</strong>
-    <%= photo.likes_count %>
-  </p>
+    <p class="card-text">
+      <strong>Caption:</strong> <%= photo.caption %>
+    </p>
 
-  <p>
-    <strong>Caption:</strong>
-    <%= photo.caption %>
-  </p>
+    <p class="card-text">
+      <strong>Likes:</strong> <%= photo.likes_count %> |
+      <strong>Comments:</strong> <%= photo.comments_count %>
+    </p>
+  </div>
 
-  <p>
-    <strong>Owner:</strong>
-    <%= photo.owner_id %>
-  </p>
-
+  <div class="card-footer">
+    <% if user_signed_in? %>
+      <% if current_user.likes.exists?(photo: photo) %>
+        <%= button_to "💔 Unlike", like_path(current_user.likes.find_by(photo: photo)), method: :delete, class: "btn btn-sm btn-outline-danger" %>
+      <% else %>
+        <%= button_to "❤️ Like", likes_path(photo_id: photo.id), method: :post, class: "btn btn-sm btn-outline-primary" %>
+      <% end %>
+    <% end %>
+  </div>
 </div>
